@@ -22,8 +22,8 @@ namespace Inlämninguppgift1
         {
             int[] numbers = fileReader.ReadFromFileInRootDirectory("Unsorted", "TextFiles")
                 .Select(int.Parse).ToArray();
-            //numbers.BubbleSort();
-            numbers.MergeSort();
+            numbers.BubbleSort();
+            //numbers.MergeSort();
             //numbers.QuickSort();
             numbers.Select(n => n.ToString()).ToArray();
             fileWriter.WriteToFileInRootDirectory(numbers.Select(n => n.ToString()).ToArray(), "TextFiles");
