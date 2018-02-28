@@ -22,12 +22,18 @@ namespace InlämningsUppgift2
         {
             int[] numbers = fileReader.ReadFromFileInRootDirectory("UnsortedNumbers", "TextFiles")
                 .Select(int.Parse).ToArray();
-            //numbers.BubbleSort();
-            //numbers.MergeSort();
-            //numbers.QuickSort();
-            numbers.Select(n => n.ToString()).ToArray();
-            fileWriter.WriteToFileInRootDirectory(numbers.Select(n => n.ToString()).ToArray(), "TextFiles");
-        }
 
+            char[] chars = fileReader.ReadFromFileInRootDirectory("UnsortedChars", "TextFiles")
+                .Select(c => char.Parse(c)).ToArray();
+            //numbers.BubbleSort();
+            //chars.BubbleSort();
+            //numbers.MergeSort();
+            //chars.MergeSort();
+            numbers.QuickSort();
+            chars.QuickSort();
+
+            fileWriter.WriteToFileInRootDirectory(numbers.Select(n => n.ToString()).ToArray(), "TextFiles");
+            fileWriter.WriteToFileInRootDirectory(chars.Select(n => n.ToString()).ToArray(), "TextFiles", "sortedChars");
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileHandler;
+using System;
 
 namespace InlämningsUppgift2
 {
@@ -6,6 +7,8 @@ namespace InlämningsUppgift2
     {
         static void Main(string[] args)
         {
+            Runtime run = new Runtime(new FileReader(), new FileWriter());
+            run.Start();
         }
     }
 }
