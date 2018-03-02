@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileHandler;
+using System;
 
 namespace Inlämninguppgift1
 {
@@ -6,7 +7,7 @@ namespace Inlämninguppgift1
     {
         static void Main(string[] args)
         {
-            var runtime = new Runtime();
+            var runtime = new Runtime(new FileReader(), new FileWriter());
             runtime.Start();
         }
     }

@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inlämninguppgift1.Extensions
+namespace InlämningsUppgift2
 {
-    static class SortExtensions
+    static class Sorting
     {
-        public static void BubbleSort(this int[] numbers)
+        public static void BubbleSort<T>(this T[] numbers) where T : IComparable
         {
             for (int i = 0; i < numbers.Length; i++)
             {
                 for (int sort = 0; sort < numbers.Length - 1; sort++)
                 {
-                    if (numbers[sort] > numbers[sort + 1])
+                    if (numbers[sort].CompareTo(numbers[sort + 1]) > 0)
                     {
-                        int temp = numbers[sort];
+                        T temp = numbers[sort];
                         numbers[sort] = numbers[sort + 1];
                         numbers[sort + 1] = temp;
                     }
@@ -22,7 +22,7 @@ namespace Inlämninguppgift1.Extensions
             }
         }
 
-        public static void MergeSort(this int[] numbers)
+        public static void MergeSort<T>(this T[] numbers) where T : IComparable
         {
             if (numbers.Length < 2)
                 return;
@@ -49,12 +49,12 @@ namespace Inlämninguppgift1.Extensions
         }
 
         // Merge to already sorted blocks
-        private static void Merge(this int[] numbers, int startL, int stopL,
-            int startR, int stopR)
+        private static void Merge<T>(this T[] numbers, int startL, int stopL,
+            int startR, int stopR) where T : IComparable
         {
             // Additional arrays needed for merging
-            int[] right = new int[stopR - startR + 1];
-            int[] left = new int[stopL - startL + 1];
+            T[] right = new T[stopR - startR + 1];
+            T[] left = new T[stopL - startL + 1];
 
             // Copy the elements to the additional arrays
             for (int i = 0, k = startR; i < (right.Length - 1); i++, k++)
@@ -66,13 +66,15 @@ namespace Inlämninguppgift1.Extensions
                 left[i] = numbers[k];
             }
 
-            right[right.Length - 1] = int.MaxValue;
-            left[left.Length - 1] = int.MaxValue;
+            // Sentinel values
+            //right[right.Length - 1] =  int.MaxValue;
+            //left[left.Length - 1] = int.MaxValue;
 
             // Merge the two sorted arrays into the initial one
             for (int k = startL, m = 0, n = 0; k < stopR; k++)
             {
-                if (left[m] <= right[n])
+                //if (left[m] <= right[n])
+                if (left[m].CompareTo(right[n]) <= 1)
                 {
                     numbers[k] = left[m];
                     m++;
@@ -86,28 +88,30 @@ namespace Inlämninguppgift1.Extensions
         }
 
 
-        public static void QuickSort(this int[] numbers)
+        public static void QuickSort<T>(this T[] numbers) where T : IComparable
         {
             numbers.QuickSort(0, numbers.Length - 1);
         }
-        static void QuickSort(this int[] numbers, int low, int high)
+        static void QuickSort<T>(this T[] numbers, int low, int high) where T : IComparable
         {
             int i = low, j = high;
             // Get the pivot element from the middle of the list
-            int pivot = numbers[low + (high - low) / 2];
+            T pivot = numbers[low + (high - low) / 2];
 
             // Divide into two lists
             while (i <= j)
             {
                 // If the current value from the left list is smaller than the pivot
                 // element then get the next element from the left list
-                while (numbers[i] < pivot)
+                //while (numbers[i] < pivot)
+                while (numbers[i].CompareTo(pivot) < 0)
                 {
                     i++;
                 }
                 // If the current value from the right list is larger than the pivot
                 // element then get the next element from the right list
-                while (numbers[j] > pivot)
+                //while (numbers[j] > pivot)
+                while (numbers[j].CompareTo(pivot) > 0)
                 {
                     j--;
                 }
@@ -129,11 +133,13 @@ namespace Inlämninguppgift1.Extensions
             if (i < high)
                 numbers.QuickSort(i, high);
         }
-        static void SwapElement(this int[] numbers, int left, int right)
+        static void SwapElement<T>(this T[] numbers, int left, int right)
         {
-            int temp = numbers[left];
+            T temp = numbers[left];
             numbers[left] = numbers[right];
             numbers[right] = temp;
         }
+
+
     }
 }
