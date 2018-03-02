@@ -21,22 +21,6 @@ namespace Inlämninguppgift1.Extensions
                 }
             }
         }
-        static void BubbleAnimate(int[] numbers, int sort)
-        {
-            System.Threading.Thread.Sleep(400);
-            Console.Clear();
-            foreach (var number in numbers)
-            {
-                if (number == numbers[sort])
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(number + ", ");
-                    Console.ResetColor();
-                }
-                else
-                    Console.Write(number + ", ");
-            }
-        }
 
         public static void MergeSort(this int[] numbers)
         {
@@ -82,7 +66,6 @@ namespace Inlämninguppgift1.Extensions
                 left[i] = numbers[k];
             }
 
-            // Sentinel values
             right[right.Length - 1] = int.MaxValue;
             left[left.Length - 1] = int.MaxValue;
 

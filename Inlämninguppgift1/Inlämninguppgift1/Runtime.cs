@@ -25,21 +25,7 @@ namespace Inlämninguppgift1
             numbers.BubbleSort();
             //numbers.MergeSort();
             //numbers.QuickSort();
-            numbers.Select(n => n.ToString()).ToArray();
             fileWriter.WriteToFileInRootDirectory(numbers.Select(n => n.ToString()).ToArray(), "TextFiles");
-        }
-
-        List<int> GetNumbersFromFile(string fileNameWithExtension)
-        {
-            var filePath = $@"{Directory.GetCurrentDirectory()}\TextFiles\{fileNameWithExtension}";
-            return File.ReadAllLines(filePath).Select(int.Parse).ToList();
-        }
-
-        void SaveNumbersToFile(int[] numbers, string filename)
-        {
-            string[] numbersToString = Array.ConvertAll(numbers, n => n.ToString());
-            var filePath = $@"{Directory.GetCurrentDirectory()}\TextFiles\{filename}";
-            File.WriteAllLines(filePath, numbersToString);
         }
     }
 }
