@@ -6,97 +6,91 @@ namespace InlämningsUppgift2
 {
     static class Sorting
     {
-        public static void BubbleSort<T>(this T[] numbers) where T : IComparable
+        public static void BubbleSort<T>(this T[] array) where T : IComparable<T>
         {
-            for (int i = 0; i < numbers.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
-                for (int sort = 0; sort < numbers.Length - 1; sort++)
+                for (int sort = 0; sort < array.Length - 1; sort++)
                 {
-                    if (numbers[sort].CompareTo(numbers[sort + 1]) > 0)
+                    if (array[sort].CompareTo(array[sort + 1]) > 0)
                     {
-                        T temp = numbers[sort];
-                        numbers[sort] = numbers[sort + 1];
-                        numbers[sort + 1] = temp;
+                        T temp = array[sort];
+                        array[sort] = array[sort + 1];
+                        array[sort + 1] = temp;
                     }
                 }
             }
         }
 
-        public static void MergeSort<T>(this T[] numbers) where T : IComparable
+        static public void MergeSort<T>(this T[] array, int low, int high) where T : IComparable<T>
         {
-            if (numbers.Length < 2)
-                return;
-
-            int step = 1;
-            int startL, startR;
-
-            while (step < numbers.Length)
+            if (low < high)
             {
-                startL = 0;
-                startR = step;
-                while (startR + step <= numbers.Length)
-                {
-                    numbers.Merge(startL, startL + step, startR, startR + step);
-                    startL = startR + step;
-                    startR = startL + step;
-                }
-                if (startR < numbers.Length)
-                {
-                    numbers.Merge(startL, startL + step, startR, numbers.Length);
-                }
-                step *= 2;
+                int middle = (low / 2) + (high / 2);
+                MergeSort(array, low, middle);
+                MergeSort(array, middle + 1, high);
+                Merge(array, low, middle, high);
             }
         }
 
-        // Merge to already sorted blocks
-        private static void Merge<T>(this T[] numbers, int startL, int stopL,
-            int startR, int stopR) where T : IComparable
+        static public void Merge<T>(this T[] array, int low, int middle, int high) where T : IComparable<T>
         {
-            // Additional arrays needed for merging
-            T[] right = new T[stopR - startR + 1];
-            T[] left = new T[stopL - startL + 1];
+            int left = low;
+            int right = middle + 1;
+            T[] tmp = new T[(high - low) + 1];
+            int tmpIndex = 0;
 
-            // Copy the elements to the additional arrays
-            for (int i = 0, k = startR; i < (right.Length - 1); i++, k++)
+            while ((left <= middle) && (right <= high))
             {
-                right[i] = numbers[k];
-            }
-            for (int i = 0, k = startL; i < (left.Length - 1); i++, k++)
-            {
-                left[i] = numbers[k];
-            }
-
-            // Sentinel values
-            //right[right.Length - 1] =  int.MaxValue;
-            //left[left.Length - 1] = int.MaxValue;
-
-            // Merge the two sorted arrays into the initial one
-            for (int k = startL, m = 0, n = 0; k < stopR; k++)
-            {
-                //if (left[m] <= right[n])
-                if (left[m].CompareTo(right[n]) <= 1)
+                if (array[left].CompareTo(array[right]) < 0)
                 {
-                    numbers[k] = left[m];
-                    m++;
+                    tmp[tmpIndex] = array[left];
+                    left = left + 1;
                 }
                 else
                 {
-                    numbers[k] = right[n];
-                    n++;
+                    tmp[tmpIndex] = array[right];
+                    right = right + 1;
                 }
+                tmpIndex = tmpIndex + 1;
+            }
+
+            if (left <= middle)
+            {
+                while (left <= middle)
+                {
+                    tmp[tmpIndex] = array[left];
+                    left = left + 1;
+                    tmpIndex = tmpIndex + 1;
+                }
+            }
+
+            if (right <= high)
+            {
+                while (right <= high)
+                {
+                    tmp[tmpIndex] = array[right];
+                    right = right + 1;
+                    tmpIndex = tmpIndex + 1;
+                }
+            }
+
+            for (int i = 0; i < tmp.Length; i++)
+            {
+                array[low + i] = tmp[i];
             }
         }
 
 
-        public static void QuickSort<T>(this T[] numbers) where T : IComparable
+        public static void QuickSort<T>(this T[] array) where T : IComparable
         {
-            numbers.QuickSort(0, numbers.Length - 1);
+            array.QuickSort(0, array.Length - 1);
         }
-        static void QuickSort<T>(this T[] numbers, int low, int high) where T : IComparable
+        static void QuickSort<T>(this T[] array, int low, int high) where T : IComparable
         {
             int i = low, j = high;
             // Get the pivot element from the middle of the list
-            T pivot = numbers[low + (high - low) / 2];
+            T pivot = array[low + (high - low) / 2];
 
             // Divide into two lists
             while (i <= j)
@@ -104,14 +98,14 @@ namespace InlämningsUppgift2
                 // If the current value from the left list is smaller than the pivot
                 // element then get the next element from the left list
                 //while (numbers[i] < pivot)
-                while (numbers[i].CompareTo(pivot) < 0)
+                while (array[i].CompareTo(pivot) < 0)
                 {
                     i++;
                 }
                 // If the current value from the right list is larger than the pivot
                 // element then get the next element from the right list
                 //while (numbers[j] > pivot)
-                while (numbers[j].CompareTo(pivot) > 0)
+                while (array[j].CompareTo(pivot) > 0)
                 {
                     j--;
                 }
@@ -123,21 +117,21 @@ namespace InlämningsUppgift2
                 // As we are done we can increase i and j
                 if (i <= j)
                 {
-                    numbers.SwapElement(i, j);
+                    array.SwapElement(i, j);
                     i++;
                     j--;
                 }
             }
             if (low < j)
-                numbers.QuickSort(low, j);
+                array.QuickSort(low, j);
             if (i < high)
-                numbers.QuickSort(i, high);
+                array.QuickSort(i, high);
         }
-        static void SwapElement<T>(this T[] numbers, int left, int right)
+        static void SwapElement<T>(this T[] array, int left, int right)
         {
-            T temp = numbers[left];
-            numbers[left] = numbers[right];
-            numbers[right] = temp;
+            T temp = array[left];
+            array[left] = array[right];
+            array[right] = temp;
         }
 
 
