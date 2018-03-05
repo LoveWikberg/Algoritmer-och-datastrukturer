@@ -28,19 +28,37 @@ namespace InlämningsUppgift2
                 .Select(c => char.Parse(c)).ToArray();
             string[] strings = fileReader.ReadFromFileInRootDirectory("UnsortedStrings", "TextFiles");
 
-            numbers.MergeSort(0, numbers.Length - 1);
-            doubles.MergeSort(0, doubles.Length - 1);
-            chars.MergeSort(0, chars.Length - 1);
-            strings.MergeSort(0, strings.Length - 1);
+            #region numbers
+            //numbers.BubbleSort();
+            //numbers.MergeSort(0, numbers.Length - 1);
+            numbers.QuickSort();
+            #endregion
 
+            #region doubles
+            //doubles.BubbleSort();
+            //doubles.MergeSort(0, doubles.Length - 1);
+            //doubles.QuickSort();
+            #endregion
 
-            string intFilename = string.Format("{0:yyyy-MM-dd--H-mm-ss}_SortedIntegers.txt",
+            #region chars
+            //chars.BubbleSort();
+            //chars.MergeSort(0, chars.Length - 1);
+            chars.QuickSort();
+            #endregion
+
+            #region strings
+            //strings.BubbleSort();
+            //strings.MergeSort(0, strings.Length - 1);
+            //strings.QuickSort();
+            #endregion
+
+            string intFilename = string.Format("{0:yyyy-MM-dd--H-mm-ss}_SortedIntegers",
             DateTime.Now);
-            string doubleFilename = string.Format("{0:yyyy-MM-dd--H-mm-ss}_SortedDoubles.txt",
+            string doubleFilename = string.Format("{0:yyyy-MM-dd--H-mm-ss}_SortedDoubles",
             DateTime.Now);
             string charFilename = string.Format("{0:yyyy-MM-dd--H-mm-ss}_SortedChars",
             DateTime.Now);
-            string stringFilename = string.Format("{0:yyyy-MM-dd--H-mm-ss}_SortedStrings.txt",
+            string stringFilename = string.Format("{0:yyyy-MM-dd--H-mm-ss}_SortedStrings",
             DateTime.Now);
             fileWriter.WriteToFileInRootDirectory(numbers.Select(n => n.ToString()).ToArray(), "TextFiles", intFilename);
             fileWriter.WriteToFileInRootDirectory(doubles.Select(n => n.ToString()).ToArray(), "TextFiles", doubleFilename);
