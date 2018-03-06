@@ -19,8 +19,10 @@ namespace Inlämningsuppgift3
             string[] menuOptions = new string[]
             {
                  "Shuffle list"
-                ,"Sort all members by age"
-                , "Sort all members by lastname"
+                ,"Bubble sort all members by age"
+                ,"Quicksort all members by age"
+                , "Bubble sort all members by lastname"
+                , "Quicksort all members by lastname"
                 , "Show all members that haven't payed"
                 ,  "Search by social security number"
                 ,"Search by lastname"
@@ -32,31 +34,8 @@ namespace Inlämningsuppgift3
             var members = GenerateMemberArray();
             PrintMembers(members);
             PrintUI(members, menuOptions);
-
-            Member[] asd = SearchMembers(members, m => m.Firstname == "hej");
         }
 
-        //Member[] GetMembers(Member[] members, string search, Func<bool> condition)
-        //{
-        //    for (int i = 0; i < members.Length; i++)
-        //    {
-        //        if(condition() == true)
-        //    }
-        //}
-
-        Member[] SearchMembers<TKey>(Member[] members, Func<Member, TKey> selector)
-        {
-            Member[] membersss;
-            for (int i = 0; i < members.Length; i++)
-            {
-                if (selector(members[i]))
-                {
-
-                }
-            }
-
-            return new Member[2];
-        }
 
         void PrintUI(Member[] members, string[] menuOptions)
         {
@@ -67,59 +46,83 @@ namespace Inlämningsuppgift3
                 switch (menuSelection)
                 {
                     case 0:
-                        Console.Clear();
                         members.Shuffle();
-                        PrintMembers(members);
                         break;
                     case 1:
-                        Console.Clear();
                         members.BubbleSort((m => m.SocialSecurityNumber));
-                        PrintMembers(members);
                         break;
                     case 2:
-                        Console.Clear();
-                        members.QuickSort((m => m.Lastname));
-                        PrintMembers(members);
+                        members.QuickSort((m => m.SocialSecurityNumber));
                         break;
                     case 3:
-                        // Show members that haven't payed
+                        members.BubbleSort((m => m.Lastname));
                         break;
                     case 4:
-                        // Search by social security number
+                        members.QuickSort((m => m.Lastname));
                         break;
                     case 5:
-                        //Search by lastname
-                        Console.WriteLine();
-                        Console.Write("Please enter a lastname: ");
-                        string search = Console.ReadLine();
-                        Console.Clear();
-                        PrintMembers(members);
+                        members = members.CustomWhere(m => m.IsMembershipPayed);
                         break;
                     case 6:
-                        //Search by lastname
+                        SocialSecurityNumberSearchUI(ref members);
                         break;
                     case 7:
-                        //Search by lastname
+                        LastNameSearchUI(ref members);
                         break;
                     case 8:
                         //Search by lastname
                         break;
                     case 9:
-                        Console.Clear();
+                        //Search by lastname
+                        break;
+                    case 10:
+                        //Search by lastname
+                        break;
+                    case 11:
                         members = GenerateMemberArray();
-                        PrintMembers(members);
                         break;
                 }
+                Console.Clear();
+                PrintMembers(members);
             }
+        }
+
+        void SocialSecurityNumberSearchUI(ref Member[] members)
+        {
+            bool result = false;
+            do
+            {
+                Console.SetCursorPosition(0, 11);
+                Console.WriteLine("SSN can only contains digits");
+                Console.WriteLine("Please enter a social security");
+                Console.Write("number: ");
+                string searchNumber = Console.ReadLine();
+                result = float.TryParse(searchNumber, out float number);
+                if (result)
+                    members = members.CustomWhere(m => m.SocialSecurityNumber == number);
+                else
+                    Console.WriteLine("Invalid input");
+            }
+            while (!result);
+            Console.SetCursorPosition(0, 0);
+        }
+        void LastNameSearchUI(ref Member[] members)
+        {
+            Console.WriteLine();
+            Console.Write("Please enter a lastname: ");
+            string search = Console.ReadLine();
+            members = members.CustomWhere(m => m.Lastname.ToLower() == search.ToLower());
         }
         void PrintMembers(Member[] members)
         {
             int top = 0;
             foreach (var member in members)
             {
+                string SSL = member.SocialSecurityNumber.ToString();
+                SSL = $"{SSL[0]}{SSL[1]}{SSL[2]}{SSL[3]}{SSL[4]}{SSL[5]}{SSL[6]}{SSL[7]}-{SSL[8]}{SSL[9]}{SSL[10]}{SSL[11]}";
                 Console.SetCursorPosition(50, top);
                 top++;
-                Console.WriteLine($"{top}. { member.Firstname} | {member.Lastname} | {member.SocialSecurityNumber} | {member.IsMembershipPayed}");
+                Console.WriteLine($"{top}. { member.Firstname} | {member.Lastname} | {SSL} | {member.IsMembershipPayed}");
             }
             Console.SetCursorPosition(0, 0);
         }
