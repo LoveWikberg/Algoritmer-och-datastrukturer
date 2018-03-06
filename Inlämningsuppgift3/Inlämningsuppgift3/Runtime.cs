@@ -16,13 +16,9 @@ namespace Inlämningsuppgift3
 
         public void Start()
         {
-            var members = GenerateMemberArray();
-            PrintMembers(members);
-            while (true)
+            string[] menuOptions = new string[]
             {
-                int menuSelection = menu.PrintMenu(new string[]
-                {
-                    "Shuffle list"
+                 "Shuffle list"
                 ,"Sort all members by age"
                 , "Sort all members by lastname"
                 , "Show all members that haven't payed"
@@ -32,7 +28,41 @@ namespace Inlämningsuppgift3
                 ,"Sort list of 20 000 integers"
                 , "Sort list of 40 000 integers"
                 , "Reset members"
-                });
+            };
+            var members = GenerateMemberArray();
+            PrintMembers(members);
+            PrintUI(members, menuOptions);
+
+            Member[] asd = SearchMembers(members, m => m.Firstname == "hej");
+        }
+
+        //Member[] GetMembers(Member[] members, string search, Func<bool> condition)
+        //{
+        //    for (int i = 0; i < members.Length; i++)
+        //    {
+        //        if(condition() == true)
+        //    }
+        //}
+
+        Member[] SearchMembers<TKey>(Member[] members, Func<Member, TKey> selector)
+        {
+            Member[] membersss;
+            for (int i = 0; i < members.Length; i++)
+            {
+                if (selector(members[i]))
+                {
+
+                }
+            }
+
+            return new Member[2];
+        }
+
+        void PrintUI(Member[] members, string[] menuOptions)
+        {
+            while (true)
+            {
+                int menuSelection = menu.PrintMenu(menuOptions);
 
                 switch (menuSelection)
                 {
@@ -82,29 +112,16 @@ namespace Inlämningsuppgift3
                 }
             }
         }
-
-        //Member[] GetMembers(Member[] members, string search, Func<bool> condition)
-        //{
-        //    for (int i = 0; i < members.Length; i++)
-        //    {
-        //        if(condition() == true)
-        //    }
-        //}
-
         void PrintMembers(Member[] members)
         {
-            int right = 0;
+            int top = 0;
             foreach (var member in members)
             {
-                Console.SetCursorPosition(50, right);
-                right++;
-                Console.WriteLine($"{right}. { member.Firstname} | {member.Lastname} | {member.SocialSecurityNumber} | {member.IsMembershipPayed}");
+                Console.SetCursorPosition(50, top);
+                top++;
+                Console.WriteLine($"{top}. { member.Firstname} | {member.Lastname} | {member.SocialSecurityNumber} | {member.IsMembershipPayed}");
             }
             Console.SetCursorPosition(0, 0);
-        }
-        void PrintMarkedMembers(Member[] members, string nameSearch)
-        {
-
         }
         Member[] GenerateMemberArray()
         {
