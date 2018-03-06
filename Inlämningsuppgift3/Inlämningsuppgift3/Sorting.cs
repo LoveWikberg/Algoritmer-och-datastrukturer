@@ -80,7 +80,37 @@ namespace Inlämningsuppgift3
             array[left] = array[right];
             array[right] = temp;
         }
+        public static void QuickSort<T>(this T[] array) where T : IComparable
+        {
+            array.QuickSort(0, array.Length - 1);
+        }
+        static void QuickSort<T>(this T[] array, int low, int high) where T : IComparable
+        {
+            int i = low, j = high;
+            T pivot = array[low + (high - low) / 2];
 
+            while (i <= j)
+            {
+                while (array[i].CompareTo(pivot) < 0)
+                {
+                    i++;
+                }
+                while (array[j].CompareTo(pivot) > 0)
+                {
+                    j--;
+                }
+                if (i <= j)
+                {
+                    array.SwapElement(i, j);
+                    i++;
+                    j--;
+                }
+            }
+            if (low < j)
+                array.QuickSort(low, j);
+            if (i < high)
+                array.QuickSort(i, high);
+        }
         public static void Shuffle<T>(this T[] list)
         {
             Random rng = new Random();

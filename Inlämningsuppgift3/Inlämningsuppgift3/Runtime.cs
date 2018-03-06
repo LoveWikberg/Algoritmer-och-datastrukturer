@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -70,13 +71,13 @@ namespace Inlämningsuppgift3
                         LastNameSearchUI(ref members);
                         break;
                     case 8:
-                        //Search by lastname
+                        TimeSortingOfIntegerCollection(10000);
                         break;
                     case 9:
-                        //Search by lastname
+                        TimeSortingOfIntegerCollection(20000);
                         break;
                     case 10:
-                        //Search by lastname
+                        TimeSortingOfIntegerCollection(40000);
                         break;
                     case 11:
                         members = GenerateMemberArray();
@@ -87,6 +88,25 @@ namespace Inlämningsuppgift3
             }
         }
 
+        void TimeSortingOfIntegerCollection(int numberOfElementsInCollection)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Calculating...");
+            int[] intCollection = CreateCollectionOfIntegers(numberOfElementsInCollection);
+            int[] intCollectionTwo = intCollection;
+            var watch = Stopwatch.StartNew();
+            intCollection.BubbleSort();
+            watch.Stop();
+            var elapsedTimeBubbleSort = watch.Elapsed;
+
+            watch = Stopwatch.StartNew();
+            intCollectionTwo.QuickSort();
+            watch.Stop();
+            var elapsedTimeQuickSort = watch.Elapsed;
+            Console.WriteLine($"Bubble sort Time: {elapsedTimeBubbleSort}");
+            Console.WriteLine($"Quicksort time: {elapsedTimeQuickSort}");
+            Console.ReadKey();
+        }
         void SocialSecurityNumberSearchUI(ref Member[] members)
         {
             bool result = false;
@@ -174,6 +194,18 @@ namespace Inlämningsuppgift3
 
             return long.Parse($"{year}{month}{day}{lastFour}");
 
+        }
+
+        int[] CreateCollectionOfIntegers(int numberOfElements)
+        {
+            Random random = new Random();
+            int[] intergerCollection = new int[numberOfElements];
+            for (int i = 0; i < numberOfElements; i++)
+            {
+                int number = random.Next(int.MinValue, int.MaxValue);
+                intergerCollection[i] = number;
+            }
+            return intergerCollection;
         }
     }
 }

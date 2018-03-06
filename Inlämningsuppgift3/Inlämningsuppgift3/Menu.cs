@@ -65,7 +65,7 @@ namespace Inlämningsuppgift3
                     case ConsoleKey.Enter:
                         Console.SetCursorPosition(0, topOffset);
                         PrintOptions(ConsoleColor.Green, inArray, selectedItem);
-                        System.Threading.Thread.Sleep(500);
+                        System.Threading.Thread.Sleep(100);
                         loopComplete = true;
                         break;
                 }
